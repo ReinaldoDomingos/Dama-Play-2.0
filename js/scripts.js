@@ -46,13 +46,15 @@ class  Tabuleiro {
                     colunas[j] = {
                         cor: "primary",
                         img: img,
-                        selecionado: false
+                        selecionada: false,
+                        ocupada: false
                     }
                 } else {
                     colunas[j] = {
                         cor: "secundary",
                         img: 'url(img/espaco_vazio.png)',
-                        selecionado: false
+                        selecionada: false,
+                        ocupada: false
                     };
 //                    (i % 2 != 0 && j % 2 == 0)
                 }
