@@ -5,3 +5,7 @@
     width: 10%;
     float: left;
 }
+.decimo button{
+    background-repeat: no-repeat;
+    background-size: contain;
+}
