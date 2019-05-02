@@ -17,41 +17,45 @@ angular.module('app').controller('scripts',
             $scope.iniciar();
             $scope.selecionar = function (peca) {
                 $scope.altura = '34px';
-//                console.log(peca);
-//                console.log(!peca.selecionada);
-//                console.log((peca.tipo !== 'casa'));
-                console.log($scope.peca1 !== '');
                 if (!peca.selecionada && (peca.tipo !== 'casa' || $scope.peca1 !== '')) {
                     var qtdSelecionada = tabuleiro.getQtdSeleciondaENaoOcupada();
                     console.log(qtdSelecionada);
-                    if (qtdSelecionada == 1) {
+                    if (qtdSelecionada == 1 || $scope.peca1 !== '') {
                         console.log('a2');
                         peca.selecionada = true;
                         $scope.peca2 = peca;
-//                        var outraPeca = tabuleiro.getPecaSelecionda(peca);
-//                        console.log(outraPeca);
-//                        trocarPecas(peca, outraPeca);
+//                        console.log(peca);
                         var peca1 = $scope.peca1;
                         var peca2 = $scope.peca2;
-                        console.log(peca1.ocupada);
-                        console.log(!peca2.ocupada);
+                        var estaoPerto = tabuleiro.pecasEstaoPerto(peca1, peca2);
                         if (peca1.ocupada && !peca2.ocupada) {
-                            console.log("ok");
-                            trocarPecas(peca1, peca2);
-                            console.log('ok');
-                            $scope.peca1 = '';
-                            $scope.peca2 = '';
+                            if (estaoPerto) {
+                                tabuleiro.resetPecas();
+                                trocarPecas(peca1, peca2);
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                                console.log(peca1);
+                                console.log(peca2);
+                            } else if (tabuleiro.EPossivelComer(tabuleiro.pecas, peca1, peca2)) {
+                                console.log('sim');
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                            } else {
+                                console.log('nao');
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                            }
+                            tabuleiro.resetPecas();
                         }
-                        tabuleiro.resetPecas();
                         $(document).ready(function () {
                             $scope.altura = getAltura();
-//                            console.log($scope.altura);
                         });
                     } else {
                         if (peca.tipo !== 'vazio' && peca.tipo !== 'casa') {
                             peca.selecionada = true;
                             $scope.peca1 = peca;
                             console.log("a1");
+//                            console.log(peca);
                         }
                     }
                 } else {
