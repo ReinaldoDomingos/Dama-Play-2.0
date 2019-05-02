@@ -3,16 +3,12 @@ function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
     var aux2 = peca.tipo;
     var aux3 = peca.ocupada;
-//    console.log(aux3);
     peca.img = outraPeca.img;
     peca.tipo = outraPeca.tipo;
     peca.ocupada = outraPeca.ocupada;
-//    console.log(peca.ocupada);
     outraPeca.img = aux;
     outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
-//    peca.selecionada = false;
-//    outraPeca.selecionada = false;
 }
 
 function getAltura() {
@@ -45,10 +41,8 @@ class  Tabuleiro {
         this.preencherPecas();
     }
     setImagePecas() {
-//        $
     }
     getPecas() {
-//        this.setImagePecas();
         return this.pecas;
     }
     setPecas(pecas) {
@@ -72,7 +66,6 @@ class  Tabuleiro {
                         img = 'url(img/espaco_casa.png)';
                         tipo = 'casa';
                     }
-//                    console.log(img);
                     colunas[j] = {
                         id: i + '-' + j,
                         cor: "primary",
@@ -91,20 +84,19 @@ class  Tabuleiro {
                         ocupada: ocupada,
                         tipo: tipo
                     };
-//                    (i % 2 != 0 && j % 2 == 0)
                 }
             }
             this.pecas[i] = colunas;
         }
-//            console.log(this.pecas);
     }
     getQtdSeleciondaENaoOcupada(peca) {
         var qtdSelecionada = 0;
         for (var i = 0; i < this.tamanho * 2; i++) {
             for (var j = 0; j < this.tamanho * 2; j++) {
                 if (this.pecas[i][j].selecionada &&
-                        this.pecas[i][j].tipo !== 'vazio' && this.pecas[i][j] !== peca)
+                        this.pecas[i][j].tipo !== 'vazio' && this.pecas[i][j] !== peca) {
                     qtdSelecionada++;
+                }
             }
         }
         return qtdSelecionada;
@@ -113,7 +105,6 @@ class  Tabuleiro {
         for (var i = 0; i < this.tamanho * 2; i++) {
             for (var j = 0; j < this.tamanho * 2; j++) {
                 if (this.pecas[i][j].selecionada && this.pecas[i][j] !== peca) {
-                    console.log('s ' + this.pecas[i][j].id);
                     return  this.pecas[i][j];
                 }
             }
@@ -126,11 +117,11 @@ class  Tabuleiro {
         id1[1] = parseInt(id1[1]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
-//        console.log(id1[0] + " " + id1[1]);
-//        console.log(id2[0] + " " + id2[1]);
+        var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
+        var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
         var estaoPerto =
-                (((id1[0] + 1 == id2[0]) //linha abaixo
-                        || (id1[0] - 1 == id2[0]))//linha acima
+                (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
+                        || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
                         && ((id1[1] + 1 == id2[1])//coluna direita
                                 || (id1[1] - 1 == id2[1]))); //coluna esquerda
         return estaoPerto;
@@ -138,14 +129,14 @@ class  Tabuleiro {
     EPossivelComer(pecas, peca1, peca2) {
         var id1 = peca1.id.split('-');
         var id2 = peca2.id.split('-');
-//        console.log(pecas);
-//        console.log('Peças');
         id1[0] = parseInt(id1[0]);
         id1[1] = parseInt(id1[1]);
-//        console.log(pecas[id1[0]][id1[1]]);
-//        console.log(pecas[id2[0]][id2[1]]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
+
+        var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
+        var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
+
         //Abaixo a direita
         var possivelPecaASerComida_b_d = 0;
         try {
@@ -175,7 +166,12 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_b_d.ocupada &&
                     (id1[0] + 2 == id2[0])
-                    && (id1[1] + 2 == id2[1])) {
+                    && (id1[1] + 2 == id2[1])
+                    && peca1PodeMoverBaixo
+                    && peca1.tipo !== pecas[id1[0] + 1][id1[1] + 1].tipo) {
+                possivelPecaASerComida_b_d.cor = 'primary';
+                possivelPecaASerComida_b_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_d.ocupada = false;
                 return true;
             }
         } catch (err) {
@@ -183,7 +179,12 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_b_e.ocupada &&
                     (id1[0] + 2 == id2[0])
-                    && (id1[1] - 2 == id2[1])) {
+                    && (id1[1] - 2 == id2[1])
+                    && peca1PodeMoverBaixo
+                    && peca1.tipo !== pecas[id1[0] + 1][id1[1] - 1].tipo) {
+                possivelPecaASerComida_b_e.cor = 'primary';
+                possivelPecaASerComida_b_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_e.ocupada = false;
                 return true;
             }
         } catch (err) {
@@ -191,7 +192,12 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_c_d.ocupada &&
                     (id1[0] - 2 == id2[0])
-                    && (id1[1] + 2 == id2[1])) {
+                    && (id1[1] + 2 == id2[1])
+                    && peca1PodeMoverCima
+                    && peca1.tipo !== pecas[id1[0] - 1][id1[1] + 1].tipo) {
+                possivelPecaASerComida_c_d.cor = 'primary';
+                possivelPecaASerComida_c_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_d.ocupada = false;
                 return true;
 
             }
@@ -200,18 +206,17 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_c_e.ocupada &&
                     (id1[0] - 2 == id2[0])
-                    && (id1[1] - 2 == id2[1])) {
+                    && (id1[1] - 2 == id2[1])
+                    && peca1PodeMoverCima
+                    && peca1.tipo !== pecas[id1[0] - 1][id1[1] - 1].tipo) {
+                possivelPecaASerComida_c_e.cor = 'primary';
+                possivelPecaASerComida_c_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_e.ocupada = false;
                 return true;
-
             }
         } catch (err) {
         }
         return res;
-//        ((((id1[0] + 2 == id2[0]) //2 linha abaixo
-//                || (id1[0] - 2 == id2[0])) && possivelPecaASerComida1_1.ocupada)//2 linha acima
-//                && ((((id1[1] + 2 == id2[1])//2 coluna direita
-//                        || (id1[1] - 2 == id2[1] && possivelPecaASerComida2_2.ocupada)))));//2 coluna esquerda
-//        return estaoPerto;
     }
     resetPecas() {
         for (var i = 0; i < this.tamanho * 2; i++) {

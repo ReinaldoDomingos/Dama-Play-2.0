@@ -18,13 +18,10 @@ angular.module('app').controller('scripts',
             $scope.selecionar = function (peca) {
                 $scope.altura = '34px';
                 if (!peca.selecionada && (peca.tipo !== 'casa' || $scope.peca1 !== '')) {
+                    peca.selecionada = true;
                     var qtdSelecionada = tabuleiro.getQtdSeleciondaENaoOcupada();
-                    console.log(qtdSelecionada);
-                    if (qtdSelecionada == 1 || $scope.peca1 !== '') {
-                        console.log('a2');
-                        peca.selecionada = true;
+                    if (qtdSelecionada == 2 && $scope.peca1 !== '') {
                         $scope.peca2 = peca;
-//                        console.log(peca);
                         var peca1 = $scope.peca1;
                         var peca2 = $scope.peca2;
                         var estaoPerto = tabuleiro.pecasEstaoPerto(peca1, peca2);
@@ -34,14 +31,12 @@ angular.module('app').controller('scripts',
                                 trocarPecas(peca1, peca2);
                                 $scope.peca1 = '';
                                 $scope.peca2 = '';
-                                console.log(peca1);
-                                console.log(peca2);
                             } else if (tabuleiro.EPossivelComer(tabuleiro.pecas, peca1, peca2)) {
-                                console.log('sim');
+                                trocarPecas(peca1, peca2);
                                 $scope.peca1 = '';
                                 $scope.peca2 = '';
+                                tabuleiro.resetPecas();
                             } else {
-                                console.log('nao');
                                 $scope.peca1 = '';
                                 $scope.peca2 = '';
                             }
@@ -54,15 +49,15 @@ angular.module('app').controller('scripts',
                         if (peca.tipo !== 'vazio' && peca.tipo !== 'casa') {
                             peca.selecionada = true;
                             $scope.peca1 = peca;
-                            console.log("a1");
-//                            console.log(peca);
+                        } else {
+                            peca.selecionada = false;
+                            $scope.peca1 = '';
+                            $scope.peca2 = '';
                         }
                     }
                 } else {
-                    peca.selecionada = false;
-                    console.log('a3');
+                    tabuleiro.resetPecas();
                 }
             }
-            ;
         }
 );
