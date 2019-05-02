@@ -2,15 +2,15 @@ var n = 0, ex = 0, w = 0;
 
 function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
-//    var aux2 = peca.selecionada;
+    var aux2 = peca.tipo;
     var aux3 = peca.ocupada;
-    console.log(aux3);
+//    console.log(aux3);
     peca.img = outraPeca.img;
-//    peca.selecionada = outraPeca.selecionada;
+    peca.tipo = outraPeca.tipo;
     peca.ocupada = outraPeca.ocupada;
-    console.log(peca.ocupada);
+//    console.log(peca.ocupada);
     outraPeca.img = aux;
-//    outraPeca.selecionada = aux2;
+    outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
 //    peca.selecionada = false;
 //    outraPeca.selecionada = false;
@@ -75,7 +75,7 @@ class  Tabuleiro {
                     }
 //                    console.log(img);
                     colunas[j] = {
-                        id: '-' + i + '-' + j,
+                        id: i + '-' + j,
                         cor: "primary",
                         img: img,
                         selecionada: false,
@@ -118,6 +118,22 @@ class  Tabuleiro {
                 }
             }
         }
+    }
+    pecasEstaoPerto(peca1, peca2) {
+        var id1 = peca1.id.split('-');
+        var id2 = peca2.id.split('-');
+        id1[0] = parseInt(id1[0]);
+        id1[1] = parseInt(id1[1]);
+        id2[0] = parseInt(id2[0]);
+        id2[1] = parseInt(id2[1]);
+        console.log(id1[0] + " " + id1[1]);
+        console.log(id2[0] + " " + id2[1]);
+        var estaoPerto =
+                (((id1[0] + 1 == id2[0]) //linha abaixo
+                        || (id1[0] - 1 == id2[0]))//linha acima
+                        && ((id1[1] + 1 == id2[1])//coluna direita
+                                || (id1[1] - 1 == id2[1])));//coluna esquerda
+        return estaoPerto;
     }
     resetPecas() {
         for (var i = 0; i < this.tamanho * 2; i++) {

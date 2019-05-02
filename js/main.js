@@ -20,29 +20,34 @@ angular.module('app').controller('scripts',
 //                console.log(peca);
 //                console.log(!peca.selecionada);
 //                console.log((peca.tipo !== 'casa'));
-                console.log($scope.peca1 !== '');
+//                console.log($scope.peca1 !== '');
                 if (!peca.selecionada && (peca.tipo !== 'casa' || $scope.peca1 !== '')) {
                     var qtdSelecionada = tabuleiro.getQtdSeleciondaENaoOcupada();
                     console.log(qtdSelecionada);
-                    if (qtdSelecionada == 1) {
+                    if (qtdSelecionada == 1 || $scope.peca1 !== '') {
                         console.log('a2');
                         peca.selecionada = true;
                         $scope.peca2 = peca;
+                        console.log(peca);
 //                        var outraPeca = tabuleiro.getPecaSelecionda(peca);
 //                        console.log(outraPeca);
 //                        trocarPecas(peca, outraPeca);
                         var peca1 = $scope.peca1;
                         var peca2 = $scope.peca2;
-                        console.log(peca1.ocupada);
-                        console.log(!peca2.ocupada);
-                        if (peca1.ocupada && !peca2.ocupada) {
-                            console.log("ok");
+                        var estaoPerto = tabuleiro.pecasEstaoPerto(peca1, peca2);
+//                        console.log(estaoPerto);
+//                        console.log(peca1.ocupada);
+//                        console.log(!peca2.ocupada);
+                        if (peca1.ocupada && !peca2.ocupada && estaoPerto) {
+//                            console.log("ok");
+                            tabuleiro.resetPecas();
                             trocarPecas(peca1, peca2);
-                            console.log('ok');
+//                            console.log('ok');
                             $scope.peca1 = '';
                             $scope.peca2 = '';
+                            console.log(peca1);
+                            console.log(peca2);
                         }
-                        tabuleiro.resetPecas();
                         $(document).ready(function () {
                             $scope.altura = getAltura();
 //                            console.log($scope.altura);
@@ -52,6 +57,7 @@ angular.module('app').controller('scripts',
                             peca.selecionada = true;
                             $scope.peca1 = peca;
                             console.log("a1");
+                            console.log(peca);
                         }
                     }
                 } else {
