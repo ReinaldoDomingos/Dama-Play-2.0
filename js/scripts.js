@@ -1,5 +1,4 @@
 var n = 0, ex = 0, w = 0;
-
 function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
     var aux2 = peca.tipo;
@@ -127,35 +126,92 @@ class  Tabuleiro {
         id1[1] = parseInt(id1[1]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
-        console.log(id1[0] + " " + id1[1]);
-        console.log(id2[0] + " " + id2[1]);
+//        console.log(id1[0] + " " + id1[1]);
+//        console.log(id2[0] + " " + id2[1]);
         var estaoPerto =
                 (((id1[0] + 1 == id2[0]) //linha abaixo
                         || (id1[0] - 1 == id2[0]))//linha acima
                         && ((id1[1] + 1 == id2[1])//coluna direita
-                                || (id1[1] - 1 == id2[1])));//coluna esquerda
+                                || (id1[1] - 1 == id2[1]))); //coluna esquerda
         return estaoPerto;
     }
     EPossivelComer(pecas, peca1, peca2) {
         var id1 = peca1.id.split('-');
         var id2 = peca2.id.split('-');
-        console.log(pecas);
-        console.log('Peças');
+//        console.log(pecas);
+//        console.log('Peças');
         id1[0] = parseInt(id1[0]);
         id1[1] = parseInt(id1[1]);
-        console.log(pecas[id1[0]][id1[1]]);
-        console.log(pecas[id2[0]][id2[1]]);
+//        console.log(pecas[id1[0]][id1[1]]);
+//        console.log(pecas[id2[0]][id2[1]]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
-//        console.log(id1[0] + " " + id1[1]);
-//        console.log(id2[0] + " " + id2[1]);
-        var estaoPerto =
-                (((id1[0] + 2 == id2[0]) //linha abaixo
-                        || (id1[0] - 2 == id2[0]))//linha acima
-                        && ((id1[1] + 2 == id2[1])//coluna direita
-                                || (id1[1] - 2 == id2[1])));//coluna esquerda
+        //Abaixo a direita
+        var possivelPecaASerComida_b_d = 0;
+        try {
+            possivelPecaASerComida_b_d = pecas[id1[0] + 1][id1[1] + 1];
+            //Abaixo a esquerda
+        } catch (err) {
+        }
+        var possivelPecaASerComida_b_e = 0;
+        try {
+            possivelPecaASerComida_b_e = pecas[id1[0] + 1][id1[1] - 1];
+        } catch (err) {
+        }
+        //Acima a direita
+        var possivelPecaASerComida_c_d = 0;
+        try {
+            possivelPecaASerComida_c_d = pecas[id1[0] - 1][id1[1] + 1];
+        } catch (err) {
+        }
+        //Acima a esquerda
+        var possivelPecaASerComida_c_e = 0;
+        try {
+            possivelPecaASerComida_c_e = pecas[id1[0] - 1][id1[1] - 1];
+        } catch (err) {
+        }
         this.resetPecas();
-        return estaoPerto;
+        var res = false;
+        try {
+            if (possivelPecaASerComida_b_d.ocupada &&
+                    (id1[0] + 2 == id2[0])
+                    && (id1[1] + 2 == id2[1])) {
+                return true;
+            }
+        } catch (err) {
+        }
+        try {
+            if (possivelPecaASerComida_b_e.ocupada &&
+                    (id1[0] + 2 == id2[0])
+                    && (id1[1] - 2 == id2[1])) {
+                return true;
+            }
+        } catch (err) {
+        }
+        try {
+            if (possivelPecaASerComida_c_d.ocupada &&
+                    (id1[0] - 2 == id2[0])
+                    && (id1[1] + 2 == id2[1])) {
+                return true;
+
+            }
+        } catch (err) {
+        }
+        try {
+            if (possivelPecaASerComida_c_e.ocupada &&
+                    (id1[0] - 2 == id2[0])
+                    && (id1[1] - 2 == id2[1])) {
+                return true;
+
+            }
+        } catch (err) {
+        }
+        return res;
+//        ((((id1[0] + 2 == id2[0]) //2 linha abaixo
+//                || (id1[0] - 2 == id2[0])) && possivelPecaASerComida1_1.ocupada)//2 linha acima
+//                && ((((id1[1] + 2 == id2[1])//2 coluna direita
+//                        || (id1[1] - 2 == id2[1] && possivelPecaASerComida2_2.ocupada)))));//2 coluna esquerda
+//        return estaoPerto;
     }
     resetPecas() {
         for (var i = 0; i < this.tamanho * 2; i++) {
