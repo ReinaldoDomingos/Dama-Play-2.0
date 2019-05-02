@@ -114,6 +114,7 @@ class  Tabuleiro {
         for (var i = 0; i < this.tamanho * 2; i++) {
             for (var j = 0; j < this.tamanho * 2; j++) {
                 if (this.pecas[i][j].selecionada && this.pecas[i][j] !== peca) {
+                    console.log('s ' + this.pecas[i][j].id);
                     return  this.pecas[i][j];
                 }
             }
@@ -133,6 +134,27 @@ class  Tabuleiro {
                         || (id1[0] - 1 == id2[0]))//linha acima
                         && ((id1[1] + 1 == id2[1])//coluna direita
                                 || (id1[1] - 1 == id2[1])));//coluna esquerda
+        return estaoPerto;
+    }
+    EPossivelComer(pecas, peca1, peca2) {
+        var id1 = peca1.id.split('-');
+        var id2 = peca2.id.split('-');
+        console.log(pecas);
+        console.log('Peças');
+        id1[0] = parseInt(id1[0]);
+        id1[1] = parseInt(id1[1]);
+        console.log(pecas[id1[0]][id1[1]]);
+        console.log(pecas[id2[0]][id2[1]]);
+        id2[0] = parseInt(id2[0]);
+        id2[1] = parseInt(id2[1]);
+//        console.log(id1[0] + " " + id1[1]);
+//        console.log(id2[0] + " " + id2[1]);
+        var estaoPerto =
+                (((id1[0] + 2 == id2[0]) //linha abaixo
+                        || (id1[0] - 2 == id2[0]))//linha acima
+                        && ((id1[1] + 2 == id2[1])//coluna direita
+                                || (id1[1] - 2 == id2[1])));//coluna esquerda
+        this.resetPecas();
         return estaoPerto;
     }
     resetPecas() {

@@ -38,15 +38,25 @@ angular.module('app').controller('scripts',
 //                        console.log(estaoPerto);
 //                        console.log(peca1.ocupada);
 //                        console.log(!peca2.ocupada);
-                        if (peca1.ocupada && !peca2.ocupada && estaoPerto) {
+                        if (peca1.ocupada && !peca2.ocupada) {
+                            if (estaoPerto) {
 //                            console.log("ok");
-                            tabuleiro.resetPecas();
-                            trocarPecas(peca1, peca2);
+                                tabuleiro.resetPecas();
+                                trocarPecas(peca1, peca2);
 //                            console.log('ok');
-                            $scope.peca1 = '';
-                            $scope.peca2 = '';
-                            console.log(peca1);
-                            console.log(peca2);
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                                console.log(peca1);
+                                console.log(peca2);
+                            } else if (tabuleiro.EPossivelComer(tabuleiro.pecas, peca1, peca2)) {
+                                console.log("ok");
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                            } else {
+                                $scope.peca1 = '';
+                                $scope.peca2 = '';
+                            }
+                            tabuleiro.resetPecas();
                         }
                         $(document).ready(function () {
                             $scope.altura = getAltura();
