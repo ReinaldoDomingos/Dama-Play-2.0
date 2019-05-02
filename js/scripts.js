@@ -128,9 +128,13 @@ class  Tabuleiro {
         id2[1] = parseInt(id2[1]);
 //        console.log(id1[0] + " " + id1[1]);
 //        console.log(id2[0] + " " + id2[1]);
+        var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
+        var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
+//        console.log(peca1PodeMoverCima);
+//        console.log(peca1PodeMoverBaixo);
         var estaoPerto =
-                (((id1[0] + 1 == id2[0]) //linha abaixo
-                        || (id1[0] - 1 == id2[0]))//linha acima
+                (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
+                        || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
                         && ((id1[1] + 1 == id2[1])//coluna direita
                                 || (id1[1] - 1 == id2[1]))); //coluna esquerda
         return estaoPerto;
@@ -142,10 +146,12 @@ class  Tabuleiro {
 //        console.log('Peças');
         id1[0] = parseInt(id1[0]);
         id1[1] = parseInt(id1[1]);
-//        console.log(pecas[id1[0]][id1[1]]);
-//        console.log(pecas[id2[0]][id2[1]]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
+
+        var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
+        var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
+
         //Abaixo a direita
         var possivelPecaASerComida_b_d = 0;
         try {
@@ -175,7 +181,8 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_b_d.ocupada &&
                     (id1[0] + 2 == id2[0])
-                    && (id1[1] + 2 == id2[1])) {
+                    && (id1[1] + 2 == id2[1])
+                    && peca1PodeMoverBaixo) {
                 return true;
             }
         } catch (err) {
@@ -183,7 +190,8 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_b_e.ocupada &&
                     (id1[0] + 2 == id2[0])
-                    && (id1[1] - 2 == id2[1])) {
+                    && (id1[1] - 2 == id2[1])
+                    && peca1PodeMoverBaixo) {
                 return true;
             }
         } catch (err) {
@@ -191,7 +199,8 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_c_d.ocupada &&
                     (id1[0] - 2 == id2[0])
-                    && (id1[1] + 2 == id2[1])) {
+                    && (id1[1] + 2 == id2[1])
+                    && peca1PodeMoverCima) {
                 return true;
 
             }
@@ -200,7 +209,8 @@ class  Tabuleiro {
         try {
             if (possivelPecaASerComida_c_e.ocupada &&
                     (id1[0] - 2 == id2[0])
-                    && (id1[1] - 2 == id2[1])) {
+                    && (id1[1] - 2 == id2[1])
+                    && peca1PodeMoverCima) {
                 return true;
 
             }
