@@ -9,3 +9,6 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
+.row{
+    /*display: -webkit-inline-box;*/
+}

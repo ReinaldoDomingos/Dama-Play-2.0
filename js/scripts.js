@@ -24,11 +24,50 @@ function getAltura() {
         w = $("button").css('width');
         var h = $(".decimo").css('width');
         h = h.substring(0, h.indexOf('px'));
+        setLayout();
         return w;
     } else {
         $("button").css('width', w);
         $("button").css('height', w);
     }
+
+}
+function setLayout() {
+    var row = $('.row').css('width');
+    row = row.substring(0, row.indexOf('px'));
+    var tabuleiro = $('.coluna').css('width');
+    tabuleiro = tabuleiro.substring(0, tabuleiro.indexOf('px'));
+    if (innerWidth <= 585 && innerWidth > 334) {
+        $('.row').css('margin', '0px !important');
+        $('button').css('width', (row / n / 2) + 'px');
+        $('button').css('height', (row / n / 2) + 'px');
+        console.log('ok4');
+    } else if (innerWidth > 700) {
+        $('.row').css("margin-left", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
+        $('.row').css("margin-rigth", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
+        console.log('ok3');
+    } else if (row < tabuleiro * n * 2 && innerWidth > 334) {
+        $('button').css('width', (row / n / 2) + 'px');
+        $('button').css('height', (row / n / 2) + 'px');
+        console.log('ok2');
+    } else if (innerWidth == 320) {
+        w = (innerWidth / 8) * 0.9;
+        $('.row').css('width', innerWidth + 'px');
+        $('button').css('width', ((innerWidth / 8) * 0.9) + 'px');
+        $('button').css('height', ((innerWidth / 8) * 0.9) + 'px');
+
+        console.log('ok');
+    }
+//    alert(innerWidth);
+    console.log('coluna ' + tabuleiro);
+    console.log('tabuleiro ' + (tabuleiro * n * 2) + 'px');
+    if (tabuleiro * n < row) {
+//        $('button').css('width', (row / n / 2) + 'px');
+//        $('button').css('height', (row / n / 2) + 'px');
+        console.log('marginr' + ((((row - (tabuleiro * n * 2)) / 2) + 'px')));
+    }
+    console.log('row ' + row);
+    console.log('page ' + innerWidth);
 }
 class  Tabuleiro {
     constructor(tamanho) {
@@ -40,8 +79,7 @@ class  Tabuleiro {
         }
         this.preencherPecas();
     }
-    setImagePecas() {
-    }
+    setImagePecas() { }
     getPecas() {
         return this.pecas;
     }
@@ -66,8 +104,7 @@ class  Tabuleiro {
                         img = 'url(img/espaco_casa.png)';
                         tipo = 'casa';
                     }
-                    colunas[j] = {
-                        id: i + '-' + j,
+                    colunas[j] = {id: i + '-' + j,
                         cor: "primary",
                         img: img,
                         selecionada: false,
@@ -76,8 +113,7 @@ class  Tabuleiro {
                     }
                 } else {
                     ocupada = true;
-                    colunas[j] = {
-                        id: '-' + i + '-' + j,
+                    colunas[j] = {id: '-' + i + '-' + j,
                         cor: "secundary",
                         img: 'url(img/espaco_vazio.png)',
                         selecionada: false,
@@ -119,11 +155,10 @@ class  Tabuleiro {
         id2[1] = parseInt(id2[1]);
         var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
         var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
-        var estaoPerto =
-                (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
-                        || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
-                        && ((id1[1] + 1 == id2[1])//coluna direita
-                                || (id1[1] - 1 == id2[1]))); //coluna esquerda
+        var estaoPerto = (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
+                || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
+                && ((id1[1] + 1 == id2[1])//coluna direita
+                        || (id1[1] - 1 == id2[1]))); //coluna esquerda
         return estaoPerto;
     }
     EPossivelComer(pecas, peca1, peca2) {

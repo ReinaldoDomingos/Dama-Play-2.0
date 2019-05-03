@@ -16,9 +16,9 @@
 
         <div class="container-fluid">           
             <div class="jumbotron">
-                <div ng-controller="scripts" class="col-md-12 white">
-                    <div class="row" ng-repeat="pecas in tabuleiro track by $index">
-                        <div ng-repeat="coluna in pecas track by $index">
+                <div ng-controller="scripts" class="col-md-12 white text-center">
+                    <div class="row text-center" ng-repeat="pecas in tabuleiro track by $index">
+                        <div class="coluna" ng-repeat="coluna in pecas track by $index">
                             <div class="decimo red">                            
                                 <button type="button" 
                                         ng-click="selecionar(coluna);"
