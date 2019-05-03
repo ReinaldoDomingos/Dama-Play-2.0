@@ -52,7 +52,12 @@ function setLayout() {
         console.log('ok2');
     } else if (innerWidth == 320) {
         w = (innerWidth / 8) * 0.9;
-        $('.row').css('width', innerWidth + 'px');
+        $('.container-fluid').css('width', (innerWidth) + 'px');
+        $('.jumbotron').css('width', "-webkit-fill-available")
+                .css('margin', '0px')
+                .css('margin-top', '10%')
+                .css('padding', '0px');
+        $('.row').css('width', (innerWidth) + 'px');
         $('button').css('width', ((innerWidth / 8) * 0.9) + 'px');
         $('button').css('height', ((innerWidth / 8) * 0.9) + 'px');
 
