@@ -17,6 +17,8 @@ angular.module('app').controller('scripts',
             $scope.iniciar();
             $scope.selecionar = function (peca) {
                 $scope.altura = '34px';
+//                console.log(peca.tipo);
+//                console.log(peca.pos);
                 if (!peca.selecionada && (peca.tipo !== 'casa' || $scope.peca1 !== '')) {
                     peca.selecionada = true;
                     var qtdSelecionada = tabuleiro.getQtdSeleciondaENaoOcupada();

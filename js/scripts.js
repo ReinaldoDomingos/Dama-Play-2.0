@@ -1,4 +1,4 @@
-var n = 0, ex = 0, w = 0;
+var n = 0, ex = 0, w = 0, damasj1 = 0, damasj2 = 0;
 function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
     var aux2 = peca.tipo;
@@ -12,10 +12,25 @@ function trocarPecas(peca, outraPeca) {
     outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
 
-    console.log(peca.pos);
-    console.log(outraPeca.pos);
-    if (peca.tipo === "jogador1" && peca.pos.x == n * 2 - 1) {
-        console.log("ok");
+    if (outraPeca.tipo == "jogador1" && outraPeca.pos.y == n * 2 - 1) {
+        var img = outraPeca.img;
+        img = img.split(',')[0];
+        var i = img.indexOf('pecas/') + 6;
+        var f = img.indexOf('.png');
+        var img = img.substring(i, f);
+        outraPeca.img = 'url(img/pecas/' + img + '_crown.png),' + outraPeca.img;
+        outraPeca.tipo = 'damaj1';
+        damasj1++;
+    }
+    if (outraPeca.tipo == "jogador2" && outraPeca.pos.y == 0) {
+        var img = outraPeca.img;
+        img = img.split(',')[0];
+        var i = img.indexOf('pecas/') + 6;
+        var f = img.indexOf('.png');
+        var img = img.substring(i, f);
+        outraPeca.img = 'url(img/pecas/' + img + '_crown.png),' + outraPeca.img;
+        outraPeca.tipo = 'damaj2';
+        damasj2++
     }
 }
 
@@ -49,15 +64,12 @@ function setLayout() {
         $('.row').css('margin', '0px !important');
         $('button').css('width', (row / n / 2) + 'px');
         $('button').css('height', (row / n / 2) + 'px');
-        console.log('ok4');
     } else if (innerWidth > 700) {
         $('.row').css("margin-left", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
         $('.row').css("margin-rigth", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
-        console.log('ok3');
     } else if (row < tabuleiro * n * 2 && innerWidth > 334) {
         $('button').css('width', (row / n / 2) + 'px');
         $('button').css('height', (row / n / 2) + 'px');
-        console.log('ok2');
     } else if (innerWidth == 320) {
         w = (innerWidth / 8) * 0.9;
         $('.container-fluid').css('width', (innerWidth) + 'px');
@@ -68,19 +80,11 @@ function setLayout() {
         $('.row').css('width', (innerWidth) + 'px');
         $('button').css('width', ((innerWidth / 8) * 0.9) + 'px');
         $('button').css('height', ((innerWidth / 8) * 0.9) + 'px');
-
-        console.log('ok');
     }
-//    alert(innerWidth);
-    console.log('coluna ' + tabuleiro);
-    console.log('tabuleiro ' + (tabuleiro * n * 2) + 'px');
     if (tabuleiro * n < row) {
 //        $('button').css('width', (row / n / 2) + 'px');
 //        $('button').css('height', (row / n / 2) + 'px');
-        console.log('marginr' + ((((row - (tabuleiro * n * 2)) / 2) + 'px')));
     }
-    console.log('row ' + row);
-    console.log('page ' + innerWidth);
 }
 class  Tabuleiro {
     constructor(tamanho) {
@@ -106,20 +110,30 @@ class  Tabuleiro {
                 var img, ocupada = false, tipo = 'vazio';
                 if ((i % 2 == 0 & j % 2 == 0) || (i % 2 != 0 & j % 2 != 0)) {
                     if (i <= n - 2) {
-                        img = 'url(img/pecas/black_man2.png)';
-//                        img = 'url(img/pecas/draught_dark_v1_crown.png)';
-//                        img = 'url(img/pecas/draught_dark_v2_crown.png)';
-//                        img = 'url(img/pecas/peca_jogador_1_crown.png)';
+                        img = ''
+//                                + 'url(img/pecas/black_queen_crown.png),'//Dama
+//                                + 'url(img/pecas/crown.png),'//Dama
+                                + 'url(img/pecas/black_man2.png)'
+//                                + 'url(img/pecas/draught_dark_v1.png)'
+//                                + 'url(img/pecas/draught_dark_v2.png)'
+//                                + 'url(img/pecas/peca_jogador_1.png)'
+                                + ',url(img/pecas/espaco_casa.png)';
                         ocupada = true;
                         tipo = 'jogador1';
                     } else if (i > n) {
-                        img = 'url(img/pecas/white_man2.png)';
-//                        img = 'url(img/pecas/draught_light_v1_crown.png)';
-//                        img = 'url(img/pecas/draught_light_v2_crown.png)';
+                        img = ''
+//                                + 'url(img/pecas/white_queen_crown.png),'//Dama 1
+//                                + 'url(img/pecas/crown.png),'//Dama 2
+                                + 'url(img/pecas/white_man2.png)'//Cor 1
+//                                + 'url(img/pecas/draught_light_v1_crown.png)'//Cor 2
+//                                + 'url(img/pecas/draught_light_v2_crown.png)'//Cor 3
+//                                + 'url(img/pecas/peca_jogador_2.png)'//Cor 4
+                                + ',url(img/pecas/espaco_casa.png)';
                         tipo = 'jogador2';
                         ocupada = true;
                     } else {
-                        img = '';
+                        img = 'url(img/pecas/espaco_casa.png)';
+//                        img = '';
                         tipo = 'casa';
                     }
                     colunas[j] = {id: i + '-' + j,
@@ -141,7 +155,7 @@ class  Tabuleiro {
                             y: i
                         },
                         cor: "secundary",
-                        img: 'url(img/espaco_vazio.png)',
+                        img: 'url(img/pecas/espaco_vazio.png)',
                         selecionada: false,
                         ocupada: ocupada,
                         tipo: tipo
@@ -231,7 +245,7 @@ class  Tabuleiro {
                     && peca1PodeMoverBaixo
                     && peca1.tipo !== pecas[id1[0] + 1][id1[1] + 1].tipo) {
                 possivelPecaASerComida_b_d.cor = 'primary';
-                possivelPecaASerComida_b_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_d.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_b_d.ocupada = false;
                 return true;
             }
@@ -244,7 +258,7 @@ class  Tabuleiro {
                     && peca1PodeMoverBaixo
                     && peca1.tipo !== pecas[id1[0] + 1][id1[1] - 1].tipo) {
                 possivelPecaASerComida_b_e.cor = 'primary';
-                possivelPecaASerComida_b_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_e.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_b_e.ocupada = false;
                 return true;
             }
@@ -257,7 +271,7 @@ class  Tabuleiro {
                     && peca1PodeMoverCima
                     && peca1.tipo !== pecas[id1[0] - 1][id1[1] + 1].tipo) {
                 possivelPecaASerComida_c_d.cor = 'primary';
-                possivelPecaASerComida_c_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_d.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_c_d.ocupada = false;
                 return true;
 
@@ -271,7 +285,7 @@ class  Tabuleiro {
                     && peca1PodeMoverCima
                     && peca1.tipo !== pecas[id1[0] - 1][id1[1] - 1].tipo) {
                 possivelPecaASerComida_c_e.cor = 'primary';
-                possivelPecaASerComida_c_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_e.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_c_e.ocupada = false;
                 return true;
             }
