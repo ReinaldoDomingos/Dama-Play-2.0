@@ -3,12 +3,20 @@ function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
     var aux2 = peca.tipo;
     var aux3 = peca.ocupada;
+
     peca.img = outraPeca.img;
     peca.tipo = outraPeca.tipo;
     peca.ocupada = outraPeca.ocupada;
+
     outraPeca.img = aux;
     outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
+
+    console.log(peca.pos);
+    console.log(outraPeca.pos);
+    if (peca.tipo === "jogador1" && peca.pos.x == n * 2 - 1) {
+        console.log("ok");
+    }
 }
 
 function getAltura() {
@@ -98,18 +106,27 @@ class  Tabuleiro {
                 var img, ocupada = false, tipo = 'vazio';
                 if ((i % 2 == 0 & j % 2 == 0) || (i % 2 != 0 & j % 2 != 0)) {
                     if (i <= n - 2) {
-                        img = 'url(img/peca_jogador_1.png)';
+                        img = 'url(img/pecas/black_man2.png)';
+//                        img = 'url(img/pecas/draught_dark_v1_crown.png)';
+//                        img = 'url(img/pecas/draught_dark_v2_crown.png)';
+//                        img = 'url(img/pecas/peca_jogador_1_crown.png)';
                         ocupada = true;
                         tipo = 'jogador1';
                     } else if (i > n) {
-                        img = 'url(img/peca_jogador_2.png)';
+                        img = 'url(img/pecas/white_man2.png)';
+//                        img = 'url(img/pecas/draught_light_v1_crown.png)';
+//                        img = 'url(img/pecas/draught_light_v2_crown.png)';
                         tipo = 'jogador2';
                         ocupada = true;
                     } else {
-                        img = 'url(img/espaco_casa.png)';
+                        img = '';
                         tipo = 'casa';
                     }
                     colunas[j] = {id: i + '-' + j,
+                        pos: {
+                            x: j,
+                            y: i
+                        },
                         cor: "primary",
                         img: img,
                         selecionada: false,
@@ -119,6 +136,10 @@ class  Tabuleiro {
                 } else {
                     ocupada = true;
                     colunas[j] = {id: '-' + i + '-' + j,
+                        pos: {
+                            x: j,
+                            y: i
+                        },
                         cor: "secundary",
                         img: 'url(img/espaco_vazio.png)',
                         selecionada: false,
