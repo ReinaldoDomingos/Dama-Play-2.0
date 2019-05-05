@@ -21,13 +21,9 @@ angular.module('app').controller('scripts',
             };
             $scope.iniciar();
             $scope.selecionar = function (peca) {
-                console.log("Peca " + peca.pos.x + " , " + peca.pos.y);
-                console.log("Selecionada: " + peca.selecionada);
-                if (!peca.selecionada && (peca.tipo !== 'casa' || ($scope.peca1 !== '' && peca.tipo == 'casa'))) {
-                    console.log("Não selecionada");
-                    console.log(peca.tipo);
-                    console.log(" tipo!= casa ou ($scope.peca1: " + $scope.peca1 + " != '' e tipo == casa)");
-                    console.log(" ");
+                $scope.altura = '34px';
+                if (!peca.selecionada && (peca.tipo !== 'casa' || $scope.peca1 !== '')) {
+                    peca.selecionada = true;
                     var qtdSelecionada = tabuleiro.getQtdSeleciondaENaoOcupada();
                     if (qtdSelecionada == 1 && $scope.peca1 !== '') {
                         console.log("Qtd Selecionada == 1 e $scope.peca1: " + $scope.peca1 + " !== ''");
