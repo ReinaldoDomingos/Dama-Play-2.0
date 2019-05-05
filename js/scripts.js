@@ -1,23 +1,20 @@
 var n = 0, ex = 0, w = 0, damasj1 = 0, damasj2 = 0;
-var peca1;
-
 function focar(peca) {
-    peca1 = peca;
 //    console.log(peca.img);
-    var img = peca1.img.split(',');
+    var img = peca.img.split(',');
     var i = img.length;
     if (img[0] != 'url(img/pecas/espaco_casa.png)') {
 //        console.log("ok10");
-        peca1.img = img[0];
+        peca.img = img[0];
     } else {
 //        console.log("ok11");
-        peca1.img = '';
+        peca.img = '';
     }
 
     //    console.log("peca.img " + peca1.img);
 //    console.log(peca1.img);
     for (var j = 1; j < i - 1; j++) {
-        console.log("okf");
+//        console.log("okf");
         peca.img += ',' + img[j];
 //        console.log(peca1.img);
     }
@@ -347,9 +344,16 @@ class  Tabuleiro {
             for (var j = 0; j < n * 2; j++) {
                 if (pecas[i][j].img == '') {
 //                    console.log(pecas[i][j].img);
+                    console.log("11111111111111111");
                     pecas[i][j].img = 'url(img/pecas/espaco_casa.png)';
                 } else if (pecas[i][j].img.indexOf("casa") != -1) {
+                    console.log("22222222222222");
                     pecas[i][j].img += ',url(img/pecas/espaco_casa.png)';
+                } else if (pecas[i][j].img.indexOf("url(img/pecas/espaco_vazio.png)") == -1) {
+                    console.log("llllllllllllllll");
+                    console.log("Esse não alterou");
+                    console.log(i + " " + j);
+                    console.log(pecas[i][j].img);
                 }
             }
         }

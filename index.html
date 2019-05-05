@@ -12,23 +12,24 @@
         <link href="css/style.css" rel="stylesheet">
 
     </head>
-    <body ng-app="app">
-
-        <div class="container-fluid">           
-            <div class="jumbotron">
-                <div ng-controller="scripts" class="col-md-12 white text-center">
-                    <div class="row text-center" ng-repeat="pecas in tabuleiro track by $index">
-                        <div class="coluna" ng-repeat="coluna in pecas track by $index">
-                            <div class="decimo red">                            
-                                <button type="button" 
-                                        ng-click="selecionar(coluna);"
-                                        class="btn btn-{{coluna.cor}}"
-                                        id="button-{{coluna.id}}"
-                                        style="background-image: {{coluna.img}};height: {{altura}};">
-                                </button>
+    <body ng-app="app" >
+            <div class="container-fluid">           
+                <div class="jumbotron">
+        <div class="hide">
+                    <div ng-controller="scripts" class="col-md-12 white text-center">
+                        <div class="row text-center" ng-repeat="pecas in tabuleiro track by $index">
+                            <div class="coluna" ng-repeat="coluna in pecas track by $index">
+                                <div class="decimo red">                            
+                                    <button type="button" 
+                                            ng-click="selecionar(coluna);"
+                                            class="btn btn-{{coluna.cor}}"
+                                            id="button-{{coluna.id}}"
+                                            style="background-image: {{coluna.img}};height: {{altura}};">
+                                    </button>
+                                </div>
                             </div>
+                            <div><br></div>
                         </div>
-                        <div><br></div>
                     </div>
                 </div>
             </div>
