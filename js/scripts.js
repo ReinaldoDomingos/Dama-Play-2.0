@@ -52,6 +52,7 @@ function trocarPecas(peca, outraPeca) {
     outraPeca.img = aux;
     outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
+    verificarDama(outraPeca);
 
     console.log(peca.pos);
     console.log(outraPeca.pos);
@@ -59,7 +60,20 @@ function trocarPecas(peca, outraPeca) {
         console.log("ok");
     }
 }
-
+function verificarDama(peca) {
+    var x = peca.pos.x;
+    var y = peca.pos.y;
+    if (peca.tipo == "jogador1" && y == n * 2 - 1)
+    {
+        peca.img = "url(img/pecas/black_queen_crown.png)," + peca.img;
+        peca.tipo = "damaj1";
+    }
+    if (peca.tipo == "jogador2" & y == 0)
+    {
+        peca.img = "url(img/pecas/white_queen_crown.png)," + peca.img;
+        peca.tipo = "damaj2";
+    }
+}
 function getAltura() {
     if (w == 0) {
         ex = 1;
@@ -147,20 +161,21 @@ class  Tabuleiro {
                 var img, ocupada = false, tipo = 'vazio';
                 if ((i % 2 == 0 & j % 2 == 0) || (i % 2 != 0 & j % 2 != 0)) {
                     if (i <= n - 2) {
-                        img = 'url(img/pecas/black_man2.png)';
-//                        img = 'url(img/pecas/draught_dark_v1_crown.png)';
-//                        img = 'url(img/pecas/draught_dark_v2_crown.png)';
-//                        img = 'url(img/pecas/peca_jogador_1_crown.png)';
+                        img = ''
+                                //+'url(img/pecas/black_queen_crown.png),'
+                                + 'url(img/pecas/black_man2.png)'
+                                + ',url(img/pecas/espaco_casa.png)';
                         ocupada = true;
                         tipo = 'jogador1';
                     } else if (i > n) {
-                        img = 'url(img/pecas/white_man2.png)';
-//                        img = 'url(img/pecas/draught_light_v1_crown.png)';
-//                        img = 'url(img/pecas/draught_light_v2_crown.png)';
+                        img = ''
+                                //+'url(img/pecas/white_queen_crown.png),'
+                                + 'url(img/pecas/white_man2.png)'
+                                + ',url(img/pecas/espaco_casa.png)';
                         tipo = 'jogador2';
                         ocupada = true;
                     } else {
-                        img = '';
+                        img = 'url(img/pecas/espaco_casa.png)';
                         tipo = 'casa';
                     }
                     colunas[j] = {id: i + '-' + j,

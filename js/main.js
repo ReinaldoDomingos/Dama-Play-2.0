@@ -16,7 +16,7 @@ angular.module('app').controller('scripts',
             $scope.iniciar = function () {
                 $(document).ready(function () {
                     getAltura();
-                    $('.hide').show();
+//                    $('.hide').show();
                 });
             };
             $scope.iniciar();
