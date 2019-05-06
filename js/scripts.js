@@ -1,3 +1,46 @@
+var n = 0, ex = 0, w = 0, damasj1 = 0, damasj2 = 0;
+function focar(peca) {
+//    console.log(peca.img);
+    var img = peca.img.split(',');
+    var i = img.length;
+    if (img[0] != 'url(img/pecas/espaco_casa.png)') {
+//        console.log("ok10");
+        peca.img = img[0];
+    } else {
+//        console.log("ok11");
+        peca.img = '';
+    }
+
+    //    console.log("peca.img " + peca1.img);
+//    console.log(peca1.img);
+    for (var j = 1; j < i - 1; j++) {
+//        console.log("okf");
+        peca.img += ',' + img[j];
+//        console.log(peca1.img);
+    }
+
+}
+function focarOutros(pecas, peca) {
+    this.tipo = peca.tipo;
+    var x = peca.pos.x;
+    var y = peca.pos.y;
+    if (this.tipo == "jogador1") {
+        if (y + 1 <= n * 2 - 1) {
+            if (x + 1 <= n * 2 - 1)
+                focar(pecas[y + 1][x + 1]);
+            if (x - 1 >= 0)
+                focar(pecas[y + 1][x - 1]);
+        }
+    }
+    if (this.tipo == "jogador2") {
+        if (y - 1 >= 0) {
+            if (x + 1 <= n * 2 - 1)
+                focar(pecas[y - 1][x + 1]);
+            if (x - 1 >= 0)
+                focar(pecas[y - 1][x - 1]);
+        }
+    }
+}
 var n = 0, ex = 0, w = 0;
 function trocarPecas(peca, outraPeca) {
     var aux = peca.img;
@@ -9,8 +52,28 @@ function trocarPecas(peca, outraPeca) {
     outraPeca.img = aux;
     outraPeca.tipo = aux2;
     outraPeca.ocupada = aux3;
-}
+    verificarDama(outraPeca);
 
+    console.log(peca.pos);
+    console.log(outraPeca.pos);
+    if (peca.tipo === "jogador1" && peca.pos.x == n * 2 - 1) {
+        console.log("ok");
+    }
+}
+function verificarDama(peca) {
+    var x = peca.pos.x;
+    var y = peca.pos.y;
+    if (peca.tipo == "jogador1" && y == n * 2 - 1)
+    {
+        peca.img = "url(img/pecas/black_queen_crown.png)," + peca.img;
+        peca.tipo = "damaj1";
+    }
+    if (peca.tipo == "jogador2" & y == 0)
+    {
+        peca.img = "url(img/pecas/white_queen_crown.png)," + peca.img;
+        peca.tipo = "damaj2";
+    }
+}
 function getAltura() {
     if (w == 0) {
         ex = 1;
@@ -24,11 +87,55 @@ function getAltura() {
         w = $("button").css('width');
         var h = $(".decimo").css('width');
         h = h.substring(0, h.indexOf('px'));
+        setLayout();
         return w;
     } else {
         $("button").css('width', w);
         $("button").css('height', w);
     }
+
+}
+function setLayout() {
+    var row = $('.row').css('width');
+    row = row.substring(0, row.indexOf('px'));
+    var tabuleiro = $('.coluna').css('width');
+    tabuleiro = tabuleiro.substring(0, tabuleiro.indexOf('px'));
+    if (innerWidth <= 585 && innerWidth > 334) {
+        $('.row').css('margin', '0px !important');
+        $('button').css('width', (row / n / 2) + 'px');
+        $('button').css('height', (row / n / 2) + 'px');
+        console.log('ok4');
+    } else if (innerWidth > 700) {
+        $('.row').css("margin-left", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
+        $('.row').css("margin-rigth", (((row - (tabuleiro * n * 2)) / 2) + 'px'));
+        console.log('ok3');
+    } else if (row < tabuleiro * n * 2 && innerWidth > 334) {
+        $('button').css('width', (row / n / 2) + 'px');
+        $('button').css('height', (row / n / 2) + 'px');
+        console.log('ok2');
+    } else if (innerWidth == 320) {
+        w = (innerWidth / 8) * 0.9;
+        $('.container-fluid').css('width', (innerWidth) + 'px');
+        $('.jumbotron').css('width', "-webkit-fill-available")
+                .css('margin', '0px')
+                .css('margin-top', '10%')
+                .css('padding', '0px');
+        $('.row').css('width', (innerWidth) + 'px');
+        $('button').css('width', ((innerWidth / 8) * 0.9) + 'px');
+        $('button').css('height', ((innerWidth / 8) * 0.9) + 'px');
+
+        console.log('ok');
+    }
+//    alert(innerWidth);
+    console.log('coluna ' + tabuleiro);
+    console.log('tabuleiro ' + (tabuleiro * n * 2) + 'px');
+    if (tabuleiro * n < row) {
+//        $('button').css('width', (row / n / 2) + 'px');
+//        $('button').css('height', (row / n / 2) + 'px');
+        console.log('marginr' + ((((row - (tabuleiro * n * 2)) / 2) + 'px')));
+    }
+    console.log('row ' + row);
+    console.log('page ' + innerWidth);
 }
 class  Tabuleiro {
     constructor(tamanho) {
@@ -40,8 +147,7 @@ class  Tabuleiro {
         }
         this.preencherPecas();
     }
-    setImagePecas() {
-    }
+    setImagePecas() { }
     getPecas() {
         return this.pecas;
     }
@@ -55,19 +161,28 @@ class  Tabuleiro {
                 var img, ocupada = false, tipo = 'vazio';
                 if ((i % 2 == 0 & j % 2 == 0) || (i % 2 != 0 & j % 2 != 0)) {
                     if (i <= n - 2) {
-                        img = 'url(img/peca_jogador_1.png)';
+                        img = ''
+                                //+'url(img/pecas/black_queen_crown.png),'
+                                + 'url(img/pecas/black_man2.png)'
+                                + ',url(img/pecas/espaco_casa.png)';
                         ocupada = true;
                         tipo = 'jogador1';
                     } else if (i > n) {
-                        img = 'url(img/peca_jogador_2.png)';
+                        img = ''
+                                //+'url(img/pecas/white_queen_crown.png),'
+                                + 'url(img/pecas/white_man2.png)'
+                                + ',url(img/pecas/espaco_casa.png)';
                         tipo = 'jogador2';
                         ocupada = true;
                     } else {
-                        img = 'url(img/espaco_casa.png)';
+                        img = 'url(img/pecas/espaco_casa.png)';
                         tipo = 'casa';
                     }
-                    colunas[j] = {
-                        id: i + '-' + j,
+                    colunas[j] = {id: i + '-' + j,
+                        pos: {
+                            x: j,
+                            y: i
+                        },
                         cor: "primary",
                         img: img,
                         selecionada: false,
@@ -76,10 +191,13 @@ class  Tabuleiro {
                     }
                 } else {
                     ocupada = true;
-                    colunas[j] = {
-                        id: '-' + i + '-' + j,
+                    colunas[j] = {id: '-' + i + '-' + j,
+                        pos: {
+                            x: j,
+                            y: i
+                        },
                         cor: "secundary",
-                        img: 'url(img/espaco_vazio.png)',
+                        img: 'url(img/pecas/espaco_vazio.png)',
                         selecionada: false,
                         ocupada: ocupada,
                         tipo: tipo
@@ -119,11 +237,10 @@ class  Tabuleiro {
         id2[1] = parseInt(id2[1]);
         var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
         var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
-        var estaoPerto =
-                (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
-                        || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
-                        && ((id1[1] + 1 == id2[1])//coluna direita
-                                || (id1[1] - 1 == id2[1]))); //coluna esquerda
+        var estaoPerto = (((id1[0] + 1 == id2[0] && peca1PodeMoverBaixo) //linha abaixo
+                || (id1[0] - 1 == id2[0] && peca1PodeMoverCima))//linha acima
+                && ((id1[1] + 1 == id2[1])//coluna direita
+                        || (id1[1] - 1 == id2[1]))); //coluna esquerda
         return estaoPerto;
     }
     EPossivelComer(pecas, peca1, peca2) {
@@ -133,10 +250,8 @@ class  Tabuleiro {
         id1[1] = parseInt(id1[1]);
         id2[0] = parseInt(id2[0]);
         id2[1] = parseInt(id2[1]);
-
         var peca1PodeMoverCima = (peca1.tipo === 'jogador1' ? false : true);
         var peca1PodeMoverBaixo = (peca1.tipo === 'jogador2' ? false : true);
-
         //Abaixo a direita
         var possivelPecaASerComida_b_d = 0;
         try {
@@ -149,13 +264,13 @@ class  Tabuleiro {
             possivelPecaASerComida_b_e = pecas[id1[0] + 1][id1[1] - 1];
         } catch (err) {
         }
-        //Acima a direita
+//Acima a direita
         var possivelPecaASerComida_c_d = 0;
         try {
             possivelPecaASerComida_c_d = pecas[id1[0] - 1][id1[1] + 1];
         } catch (err) {
         }
-        //Acima a esquerda
+//Acima a esquerda
         var possivelPecaASerComida_c_e = 0;
         try {
             possivelPecaASerComida_c_e = pecas[id1[0] - 1][id1[1] - 1];
@@ -170,7 +285,7 @@ class  Tabuleiro {
                     && peca1PodeMoverBaixo
                     && peca1.tipo !== pecas[id1[0] + 1][id1[1] + 1].tipo) {
                 possivelPecaASerComida_b_d.cor = 'primary';
-                possivelPecaASerComida_b_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_d.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_b_d.ocupada = false;
                 return true;
             }
@@ -183,7 +298,7 @@ class  Tabuleiro {
                     && peca1PodeMoverBaixo
                     && peca1.tipo !== pecas[id1[0] + 1][id1[1] - 1].tipo) {
                 possivelPecaASerComida_b_e.cor = 'primary';
-                possivelPecaASerComida_b_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_b_e.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_b_e.ocupada = false;
                 return true;
             }
@@ -196,10 +311,9 @@ class  Tabuleiro {
                     && peca1PodeMoverCima
                     && peca1.tipo !== pecas[id1[0] - 1][id1[1] + 1].tipo) {
                 possivelPecaASerComida_c_d.cor = 'primary';
-                possivelPecaASerComida_c_d.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_d.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_c_d.ocupada = false;
                 return true;
-
             }
         } catch (err) {
         }
@@ -210,7 +324,7 @@ class  Tabuleiro {
                     && peca1PodeMoverCima
                     && peca1.tipo !== pecas[id1[0] - 1][id1[1] - 1].tipo) {
                 possivelPecaASerComida_c_e.cor = 'primary';
-                possivelPecaASerComida_c_e.img = 'url(img/espaco_casa.png)';
+                possivelPecaASerComida_c_e.img = 'url(img/pecas/espaco_casa.png)';
                 possivelPecaASerComida_c_e.ocupada = false;
                 return true;
             }
@@ -222,6 +336,28 @@ class  Tabuleiro {
         for (var i = 0; i < this.tamanho * 2; i++) {
             for (var j = 0; j < this.tamanho * 2; j++) {
                 this.pecas[i][j].selecionada = false;
+            }
+        }
+
+    }
+
+    desfocar() {
+        var pecas = this.pecas;
+        for (var i = 0; i < n * 2; i++) {
+            for (var j = 0; j < n * 2; j++) {
+                if (pecas[i][j].img == '') {
+//                    console.log(pecas[i][j].img);
+                    console.log("11111111111111111");
+                    pecas[i][j].img = 'url(img/pecas/espaco_casa.png)';
+                } else if (pecas[i][j].img.indexOf("casa") != -1) {
+                    console.log("22222222222222");
+                    pecas[i][j].img += ',url(img/pecas/espaco_casa.png)';
+                } else if (pecas[i][j].img.indexOf("url(img/pecas/espaco_vazio.png)") == -1) {
+                    console.log("llllllllllllllll");
+                    console.log("Esse não alterou");
+                    console.log(i + " " + j);
+                    console.log(pecas[i][j].img);
+                }
             }
         }
     }
