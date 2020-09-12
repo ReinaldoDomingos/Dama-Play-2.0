@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Dama Play 2.0</title>
-        <meta name="description" content="Source code generated using layoutit.com">
-        <meta name="author" content="LayoutIt!">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dama Play 2.0</title>
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
 
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/style.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-    </head>
-    <body ng-app="app" >
-        <div class="container-fluid">           
-            <div class="jumbotron">
-                <!--<div class="hide">-->
-                <div>
-                    <div ng-controller="scripts" class="col-md-12 white text-center">
-                        <div class="row text-center" ng-repeat="pecas in tabuleiro track by $index">
-                            <div class="coluna" ng-repeat="coluna in pecas track by $index">
-                                <div class="decimo red">                            
-                                    <button type="button" 
-                                            ng-click="selecionar(coluna);"
-                                            class="btn btn-{{coluna.cor}}"
-                                            id="button-{{coluna.id}}"
-                                            style="background-image: {{coluna.img}};height: {{altura}};">
-                                    </button>
-                                </div>
-                            </div>
-                            <div><br></div>
+    <script src="vendor/angular/angular.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body ng-app="app">
+<div class="container-fluid">
+    <div class="jumbotron">
+        <div>
+            <!--                                    <div ng-controller="scripts" class="col-md-12 white text-center">-->
+            <div ng-controller="DamasController" class="col-md-12 white">
+
+                <div class="row text-center" ng-repeat="(x,linha) in tabuleiro" ng-show="tabuleiro.length">
+                    <div class="coluna" ng-repeat="(y,peca) in linha track by $index">
+                        <div class="decimo">
+                            <button type="button"
+                                    ng-click="selecionar(peca);"
+                                    class="btn btn-{{peca.cor}}"
+                                    id="button-{{peca.id}}"
+                                    style="background-image: {{peca.img}};width: {{size}};height: {{size}};">
+                            </button>
                         </div>
                     </div>
+                    <div><br></div>
                 </div>
+
             </div>
         </div>
+    </div>
+</div>
 
-        <script src="vendor/angular/angular.js" type="text/javascript"></script>
-        <script src="js/jquery.min.js"></script>
-        <!--<script src="js/bootstrap.min.js"></script>-->
-        <script src="js/main.js"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+<!--<script src="js/main.old.js"></script>-->
+<!--<script src="js/scripts.old.js"></script>-->
+<script src="js/utils.js"></script>
+<script src="js/main.js"></script>
+<script src="js/dama.js"></script>
+</body>
 </html>
