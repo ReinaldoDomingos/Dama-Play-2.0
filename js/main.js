@@ -1,18 +1,5 @@
 angular.module('app', []);
 
-function desmarcarTodos($scope) {
-    for (let x = 0; x < 8; x++) {
-        for (let y = 0; y < 8; y++) {
-            console.log($scope.tabuleiro[x][y].id)
-            $scope.tabuleiro[x][y].selecionada = false;
-        }
-    }
-}
-
-function isPosicaoDeCasa(x, y) {
-    return (isImpar(x) && isPar(y)) || (isPar(x) && isImpar(y));
-}
-
 angular.module('app').controller('DamasController', function ($scope) {
         function inicializarVariaveis() {
             $scope.tabuleiro = [];
@@ -52,18 +39,19 @@ angular.module('app').controller('DamasController', function ($scope) {
             $scope.selecionar = function (peca) {
                 if (peca.jogador === -1) return;
 
-                let x = peca.pos.x;
-                let y = peca.pos.y;
-
-                console.log(x, y);
-
-                if ($scope.selecionada && peca.jogador === 1) {
+                if (isSelecionada($scope) && !peca.selecionada && peca.jogador === 0) {
+                    console.log('passo3');
+                    moverPeca($scope, peca);
                     desmarcarTodos($scope);
-                    $scope.selecionada = undefined;
-                    $scope.tabuleiro[x][y].img = peca.img;
-                } else if (!peca.selecionada) {
-                    $scope.selecionada = {x: x, y: y};
-                    $scope.tabuleiro[x][y].selecionada = true;
+                } else if ((!isSelecionada($scope) && !isSelecionada(peca) && isCasaOcupada(peca))
+                    || (isSelecionada($scope) && isMesmoJogador($scope.selecionada, peca))
+                    || (isSelecionada(peca) || (isSelecionada($scope) && !isMesmoJogador($scope.selecionada, peca)))) {
+                    console.log('passo1')
+                    console.log('selecionada')
+                    desmarcarTodos($scope);
+                    marcarPecaComoSelecionada($scope, peca);
+                } else {
+                    console.log('passo 5')
                 }
             }
         }

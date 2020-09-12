@@ -22,7 +22,6 @@ function addPeca($scope, x, y, id) {
             img: 'url(img/pecas/espaco_casa.png)',
             selecionada: false,
             cor: 'secundary',
-            ocupada: false,
             jogador: 0
         };
     }
@@ -35,8 +34,7 @@ function gerarPeca(jogador) {
     let peca = {
         selecionada: false,
         cor: 'secundary',
-        jogador: jogador,
-        ocupada: true
+        jogador: jogador
     };
 
     if (peca.jogador === 1) {
@@ -54,8 +52,40 @@ function addEspacoVazio($scope, x, y, id) {
         selecionada: false,
         pos: {x: x, y: y},
         cor: 'secundary',
-        ocupada: false,
         jogador: -1,
         id: id
     };
+}
+
+function desmarcarTodos($scope) {
+    $scope.selecionada = undefined;
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            $scope.tabuleiro[x][y].selecionada = false;
+        }
+    }
+}
+
+function isPosicaoDeCasa(x, y) {
+    return (isImpar(x) && isPar(y)) || (isPar(x) && isImpar(y));
+}
+
+function marcarPecaComoSelecionada($scope, peca) {
+    let x2 = peca.pos.x;
+    let y2 = peca.pos.y;
+
+    $scope.selecionada = {x: x2, y: y2, jogador: peca.jogador};
+    $scope.tabuleiro[x2][y2].selecionada = true;
+}
+
+function isSelecionada(peca) {
+    return peca.selecionada;
+}
+
+function isMesmoJogador(item1, item2) {
+    return item1.jogador === item2.jogador && item1.jogador > 0 && item2.jogador > 0;
+}
+
+function isCasaOcupada(peca) {
+    return peca.jogador !== 0;
 }
