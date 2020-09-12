@@ -1,6 +1,3 @@
-.red{
-    background-color: red;
-}
 .decimo{
     width: 10%;
     float: left;
@@ -8,6 +5,7 @@
 .decimo button{
     background-repeat: no-repeat;
     background-size: contain;
+    background-color: #A8B0B8;
 }
 .row{
     /*display: -webkit-inline-box;*/

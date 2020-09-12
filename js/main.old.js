@@ -121,5 +121,7 @@ angular.module('app').controller('scripts',
                 }
 //                $scope.selecionar(peca2);
             }
+
+            console.log($scope.tabuleiro)
         }
 );
