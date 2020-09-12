@@ -1,12 +1,19 @@
-.decimo{
+.peca {
     width: 10%;
     float: left;
 }
-.decimo button{
+
+.peca .btn {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: #A8B0B8;
+    box-sizing: border-box;
 }
-.row{
+
+.peca .btn.selecionada {
+    background-color: blue;
+}
+
+.row {
     /*display: -webkit-inline-box;*/
 }

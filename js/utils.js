@@ -1,3 +1,5 @@
+let idAtual = 0;
+
 function isPar(num) {
     return num % 2 === 0;
 }
@@ -6,30 +8,35 @@ function isImpar(num) {
     return num % 2 !== 0;
 }
 
-function addPeca($scope, x, y) {
-    console.log('addPeca ', x, y)
+function addPeca($scope, x, y, id) {
     if (x < 8 / 2 - 1) {
-        $scope.tabuleiro[x][y] = $scope.jogador1.pecas[x % 4][y % 4];
+        let posX = x % 3;
+        let posY = y === 0 ? 0 : parseInt(y / 2);
+        $scope.tabuleiro[x][y] = $scope.jogador1.pecas[posX][posY];
     } else if (x > 8 / 2) {
-        $scope.tabuleiro[x][y] = $scope.jogador2.pecas[x % 4][(y % 4)];
+        let posX = x % 5;
+        let posY = y === 0 ? 0 : parseInt(y / 2);
+        $scope.tabuleiro[x][y] = $scope.jogador2.pecas[posX][(posY)];
     } else {
         $scope.tabuleiro[x][y] = {
             img: 'url(img/pecas/espaco_casa.png)',
-            cor: 'secundary',
             selecionada: false,
+            cor: 'secundary',
             ocupada: false,
             jogador: 0
         };
-
     }
+
+    $scope.tabuleiro[x][y].pos = {x: x, y: y};
+    $scope.tabuleiro[x][y].id = id;
 }
 
 function gerarPeca(jogador) {
     let peca = {
         selecionada: false,
-        ocupada: true,
-        jogador: jogador,
         cor: 'secundary',
+        jogador: jogador,
+        ocupada: true
     };
 
     if (peca.jogador === 1) {
@@ -41,12 +48,14 @@ function gerarPeca(jogador) {
     return peca;
 }
 
-function addEspacoVazio($scope, x, y) {
+function addEspacoVazio($scope, x, y, id) {
     $scope.tabuleiro[x][y] = {
         img: 'url(img/pecas/espaco_vazio.png)',
-        cor: 'secundary',
         selecionada: false,
+        pos: {x: x, y: y},
+        cor: 'secundary',
         ocupada: false,
-        jogador: 0
+        jogador: -1,
+        id: id
     };
 }

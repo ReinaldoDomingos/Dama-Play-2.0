@@ -8,12 +8,14 @@
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
 
-    <script src="vendor/angular/angular.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
 </head>
 <body ng-app="app">
 <div class="container-fluid">
@@ -24,13 +26,11 @@
 
                 <div class="row text-center" ng-repeat="(x,linha) in tabuleiro" ng-show="tabuleiro.length">
                     <div class="coluna" ng-repeat="(y,peca) in linha track by $index">
-                        <div class="decimo">
-                            <button type="button"
-                                    ng-click="selecionar(peca);"
-                                    class="btn btn-{{peca.cor}}"
-                                    id="button-{{peca.id}}"
-                                    style="background-image: {{peca.img}};width: {{size}};height: {{size}};">
-                            </button>
+                        <div class="peca" ng-click="selecionar(peca);">
+                            <div class="btn btn-{{peca.cor}}" id="button-{{peca.id}}"
+                                 ng-class="{'selecionada': peca.selecionada}"
+                                 style="background-image: {{peca.img}};width: {{size}};height: {{size}};">
+                            </div>
                         </div>
                     </div>
                     <div><br></div>
