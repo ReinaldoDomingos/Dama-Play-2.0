@@ -8,6 +8,16 @@ function isImpar(num) {
     return num % 2 !== 0;
 }
 
+function addCampoSemPeca(id) {
+    return {
+        img: 'url(img/pecas/espaco_casa.png)',
+        selecionada: false,
+        cor: 'secundary',
+        jogador: 0,
+        id: id
+    };
+}
+
 function addPeca($scope, x, y, id) {
     if (x < 8 / 2 - 1) {
         let posX = x % 3;
@@ -18,12 +28,7 @@ function addPeca($scope, x, y, id) {
         let posY = y === 0 ? 0 : parseInt(y / 2);
         $scope.tabuleiro[x][y] = $scope.jogador2.pecas[posX][(posY)];
     } else {
-        $scope.tabuleiro[x][y] = {
-            img: 'url(img/pecas/espaco_casa.png)',
-            selecionada: false,
-            cor: 'secundary',
-            jogador: 0
-        };
+        $scope.tabuleiro[x][y] = addCampoSemPeca(id);
     }
 
     $scope.tabuleiro[x][y].pos = {x: x, y: y};
