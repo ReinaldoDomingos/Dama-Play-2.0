@@ -20,8 +20,11 @@
 <div class="container-fluid">
     <div class="jumbotron">
         <div>
+            <div>
+                Usuário
+            </div>
             <!--                                    <div ng-controller="scripts" class="col-md-12 white text-center">-->
-            <div ng-controller="DamasController" class="col-md-12 white">
+            <div ng-controller="DamasController" class="content-tabuleiro col-md-12 white">
 
                 <div class="row text-center" ng-repeat="(x,linha) in tabuleiro" ng-show="tabuleiro.length">
                     <div class="coluna" ng-repeat="(y,peca) in linha track by $index">
