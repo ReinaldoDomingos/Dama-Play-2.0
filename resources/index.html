@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dama Play 2.0</title>
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
@@ -23,7 +21,6 @@
             <div>
                 Usuário
             </div>
-            <!--                                    <div ng-controller="scripts" class="col-md-12 white text-center">-->
             <div ng-controller="DamasController" class="content-tabuleiro col-md-12 white">
 
                 <div class="row text-center" ng-repeat="(x,linha) in tabuleiro" ng-show="tabuleiro.length">
@@ -33,7 +30,6 @@
                                  ng-class="{'selecionada': peca.selecionada}"
                                  style="background-image: {{peca.img}};width: {{size}};height: {{size}};">
                             </div>
-                            <!--                            {{peca.id}}-->
                         </div>
                     </div>
                     <div><br></div>
@@ -44,8 +40,6 @@
     </div>
 </div>
 
-<!--<script src="js/main.old.js"></script>-->
-<!--<script src="js/scripts.old.js"></script>-->
 <script src="js/utils.js"></script>
 <script src="js/main.js"></script>
 <script src="js/dama.js"></script>
