@@ -21,6 +21,8 @@
         <button class="btn btn-primary" ng-click="removerJogador()">Zerar</button>
 
         <div class="content-tabuleiro col-md-12 white">
+            <h1 ng-if="podeSelecionar">É a sua vez!</h1>
+            <h1 ng-if="!podeSelecionar">Vez do jogador {{jogador1.numero==1?2:1}}</h1>
             <div>
                 Jogador: {{jogador1.numero ? jogador1.numero : 'Não definido'}}
             </div>

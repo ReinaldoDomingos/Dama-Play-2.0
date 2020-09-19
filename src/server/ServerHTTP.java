@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 public class ServerHTTP {
     ServerSocket server;
@@ -55,14 +54,21 @@ public class ServerHTTP {
                 String request = vet[1];
 
                 String searchSession = "/sessionId/";
-                String searchConferir = "/conferirUsuario?sessionId=";
                 String searchZerar = "/zerarJogo";
-                if (request.contains(searchZerar)) {
+                String searchConferir = "/conferirUsuario?sessionId=";
+                String searchMoverPeca = "/possoMoverPeca?sessionId=";
+                if (request.contains(searchMoverPeca) && jogoDama.isPartidaIniciada()) {
+                    String sessionId = request.replace(searchMoverPeca, "");
+                    System.out.println("possoMoverPeca " + sessionId);
+                    boolean jogadorPodeMoverPeca = jogoDama.jogadorPodeMoverPeca(parseInt(sessionId));
+
+                    msg = gerarMensagem(200, "{\"podeMoverPeca\":" + jogadorPodeMoverPeca + "}");
+                    out.write(msg.getBytes());
+                } else if (request.contains(searchZerar)) {
                     System.out.println("zerando....");
                     jogoDama = new JogoDama();
                 } else if (request.contains(searchConferir)) {
                     System.out.println(request);
-
                     System.out.println("conferirUsuario");
                     String sessionId = request.replace(searchConferir, "");
                     System.out.println("sessionId " + sessionId);

@@ -64,12 +64,17 @@ angular.module('app').controller('DamasController', function ($scope) {
                 conferirUsuario($scope.jogador1.numero).then(response => {
                     salvarJogador(response, $scope);
                 });
+
+                possoMoverPeca($scope.jogador1.numero).then(response => {
+                    $scope.podeSelecionar = response.data.podeMoverPeca;
+                    $scope.$apply();
+                })
             }, 500)
         }
 
         function inicializarFuncoes() {
             $scope.selecionar = function (peca) {
-                if (!$scope.podeSelecionar || peca.jogador === -1) return;
+                if (!$scope.podeSelecionar || peca.jogador === -1 || peca.jogador === 2) return;
 
                 if (isSelecionada($scope) && !peca.selecionada && peca.jogador === 0) {
                     console.log('passo3');
@@ -89,7 +94,7 @@ angular.module('app').controller('DamasController', function ($scope) {
 
             $scope.pecaController = function (peca) {
                 let numero = $scope.jogador1.numero;
-                if(!numero) numero = 1;
+                if (!numero) numero = 1;
                 return {
                     'selecionada': peca.selecionada,
                     'j1': peca.jogador > 0 && peca.jogador == numero,

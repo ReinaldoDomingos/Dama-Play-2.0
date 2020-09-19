@@ -65,14 +65,14 @@ function movimentoDuplo($scope, x1, x2, y1, y2, jogador) {
 }
 
 function podeMoverPeca($scope, x1, x2, y1, y2, jogador) {
-    // if (y1 === y2) {
-    //     return false;
-    // } else if ((y2 - y1 === 1 || y1 - y2 === 1) && ((jogador === 1 && x2 - x1 === 1) || (jogador === 2 && x1 - x2 === 1))) {
-    //     console.log('podeMoverPeca', `${x1}x${y1} para ${x2}x${y2}`);
-    //     return true;
-    // } else if ((jogador === 1 && x2 - x1 === 2) || (jogador === 2 && x1 - x2 === 2)) {
-    //     return 2;
-    // }
+    if (y1 === y2) {
+        return false;
+    } else if ((y2 - y1 === 1 || y1 - y2 === 1) && ((jogador === 1 && x2 - x1 === 1) || (jogador === 2 && x1 - x2 === 1))) {
+        console.log('podeMoverPeca', `${x1}x${y1} para ${x2}x${y2}`);
+        return true;
+    } else if ((jogador === 1 && x2 - x1 === 2) || (jogador === 2 && x1 - x2 === 2)) {
+        return 2;
+    }
 
     return false;
 }

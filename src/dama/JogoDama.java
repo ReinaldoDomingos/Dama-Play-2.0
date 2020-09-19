@@ -1,8 +1,13 @@
 package dama;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 public class JogoDama {
     private Jogador jogador1;
     private Jogador jogador2;
+    private Jogador jogadorAtual;
+    private boolean partidaIniciada;
 
     public Jogador getJogador(int numero) {
         if (numero == 1) {
@@ -23,11 +28,29 @@ public class JogoDama {
             System.out.println("jogador2 criado");
         }
 
+        if (nonNull(jogador1) && nonNull(jogador2)) {
+            partidaIniciada = true;
+        }
+
         return "{\"jogador\": " + numero + "}";
     }
 
+    public boolean isPartidaIniciada() {
+        return partidaIniciada;
+    }
 
-    public String criarJogador2() {
-        return "{\"jogador\": 2}";
+    public boolean jogadorPodeMoverPeca(int numeroJogador) {
+        if (isNull(jogadorAtual)) {
+            int sorteio = (Math.random() * 2) < 1 ? 1 : 2;
+
+            if (sorteio == 1) {
+                jogadorAtual = jogador1;
+            } else {
+                jogadorAtual = jogador2;
+            }
+        }
+
+        return (jogadorAtual.equals(jogador1) && numeroJogador == 1) ||
+                (jogadorAtual.equals(jogador2) && numeroJogador == 2);
     }
 }
