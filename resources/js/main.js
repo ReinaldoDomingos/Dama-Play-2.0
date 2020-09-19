@@ -6,6 +6,7 @@ angular.module('app').controller('DamasController', function ($scope) {
             $scope.jogador1 = {pecas: []};
             $scope.jogador2 = {pecas: []};
             $scope.size = '68px';
+            $scope.podeSelecionar = false;
         }
 
         function initialize() {
@@ -33,11 +34,42 @@ angular.module('app').controller('DamasController', function ($scope) {
                     }
                 }
             }
+            let jogador = -1;
+
+            let searchString = "/sessionId/";
+            if (location.pathname.indexOf(searchString) !== -1) {
+                jogador = location.pathname.replace(searchString, "")
+            }
+
+            if (localStorage.getItem("jogador")) {
+                $scope.jogador1.numero = jogador = localStorage.getItem("jogador");
+                setSessionId($scope);
+            }
+
+            if ($scope.jogador1.numero) {
+                console.log('conferir usuario e iniciarPartida')
+                conferirUsuario($scope.jogador1.numero).then(response => {
+                    salvarJogador(response, $scope);
+                });
+            } else {
+                console.log('iniciarPartida')
+                iniciarPartida().then(response => {
+                    salvarJogador(response, $scope);
+                });
+            }
+
+            console.log('jogador', $scope.jogador1.numero)
+
+            setInterval(function () {
+                conferirUsuario($scope.jogador1.numero).then(response => {
+                    salvarJogador(response, $scope);
+                });
+            }, 500)
         }
 
         function inicializarFuncoes() {
             $scope.selecionar = function (peca) {
-                if (peca.jogador === -1) return;
+                if (!$scope.podeSelecionar || peca.jogador === -1) return;
 
                 if (isSelecionada($scope) && !peca.selecionada && peca.jogador === 0) {
                     console.log('passo3');
@@ -54,6 +86,20 @@ angular.module('app').controller('DamasController', function ($scope) {
                     console.log('passo 5')
                 }
             }
+
+            $scope.pecaController = function (peca) {
+                let numero = $scope.jogador1.numero;
+                if(!numero) numero = 1;
+                return {
+                    'selecionada': peca.selecionada,
+                    'j1': peca.jogador > 0 && peca.jogador == numero,
+                    'j2': peca.jogador > 0 && peca.jogador != numero,
+                    'espaco_vazio': peca.jogador === -1,
+                    'espaco_casa': peca.jogador === 0
+                };
+            };
+
+            $scope.removerJogador = removerJogador;
         }
 
         inicializarVariaveis();

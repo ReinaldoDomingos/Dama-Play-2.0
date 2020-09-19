@@ -10,7 +10,7 @@ function isImpar(num) {
 
 function addCampoSemPeca(id) {
     return {
-        img: 'url(img/pecas/espaco_casa.png)',
+        img: 'url(/img/pecas/espaco_casa.png)',
         selecionada: false,
         cor: 'secundary',
         jogador: 0,
@@ -43,9 +43,9 @@ function gerarPeca(jogador) {
     };
 
     if (peca.jogador === 1) {
-        peca.img = 'url(img/pecas/black_man2.png)';
+        peca.img = 'url(/img/pecas/jogador_1.png)';
     } else if (peca.jogador === 2) {
-        peca.img = 'url(img/pecas/white_man2.png)';
+        peca.img = 'url(/img/pecas/jogador_2.png)';
     }
 
     return peca;
@@ -53,7 +53,7 @@ function gerarPeca(jogador) {
 
 function addEspacoVazio($scope, x, y, id) {
     $scope.tabuleiro[x][y] = {
-        img: 'url(img/pecas/espaco_vazio.png)',
+        img: 'url(/img/pecas/espaco_vazio.png)',
         selecionada: false,
         pos: {x: x, y: y},
         cor: 'secundary',
@@ -93,4 +93,26 @@ function isMesmoJogador(item1, item2) {
 
 function isCasaOcupada(peca) {
     return peca.jogador !== 0;
+}
+
+function setSessionId($scope) {
+    history.pushState('', 'Dama Play 2.0', "/sessionId/" + $scope.jogador1.numero)
+}
+
+function removerJogador() {
+    localStorage.removeItem("jogador");
+    zerarJogo().then(response => {
+        location.reload();
+    })
+    location.href = "/";
+}
+
+function salvarJogador(response, $scope) {
+    let data = response.data;
+    if (data && data.jogador) {
+        $scope.jogador1.numero = data.jogador;
+        localStorage.setItem("jogador", $scope.jogador1.numero)
+        setSessionId($scope);
+        $scope.$apply();
+    }
 }

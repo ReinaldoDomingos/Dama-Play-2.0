@@ -3,6 +3,22 @@
     float: left;
 }
 
+.peca .btn.j1 {
+    background-image: url(/img/pecas/jogador_1.png) !important;
+}
+
+.peca .btn.j2 {
+    background-image: url(/img/pecas/jogador_2.png) !important;
+}
+
+.peca .btn.espaco_vazio {
+    background-image: url(/img/pecas/espaco_vazio.png) !important;
+}
+
+.peca .btn.espaco_casa {
+    background-image: url(/img/pecas/espaco_casa.png) !important;
+}
+
 .peca .btn {
     background-repeat: no-repeat;
     background-size: contain;
