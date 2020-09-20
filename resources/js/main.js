@@ -7,6 +7,7 @@ angular.module('app').controller('DamasController', function ($scope) {
             $scope.jogador2 = {pecas: []};
             $scope.size = '68px';
             $scope.podeSelecionar = false;
+            $scope.alteracoes = {};
         }
 
         function initialize() {
@@ -66,10 +67,18 @@ angular.module('app').controller('DamasController', function ($scope) {
                 });
 
                 possoMoverPeca($scope.jogador1.numero).then(response => {
+                    if ($scope.podeSelecionar === response.data.podeMovePeca) return;
                     $scope.podeSelecionar = response.data.podeMoverPeca;
                     $scope.$apply();
+                    getAlteracoes($scope.jogador1.numero).then(res => {
+                        if (res.data && $scope.alteracoes !== res.data) {
+                            $scope.alteracoes = res.data;
+                            moverPecaDoOutroLado($scope, $scope.alteracoes);
+                            $scope.$apply();
+                        }
+                    })
                 })
-            }, 500)
+            }, 300)
         }
 
         function inicializarFuncoes() {
@@ -78,7 +87,7 @@ angular.module('app').controller('DamasController', function ($scope) {
 
                 if (isSelecionada($scope) && !peca.selecionada && peca.jogador === 0) {
                     console.log('passo3');
-                    moverPeca($scope, peca);
+                    moverPecaLocal($scope, peca);
                     desmarcarTodos($scope);
                 } else if ((!isSelecionada($scope) && !isSelecionada(peca) && isCasaOcupada(peca))
                     || (isSelecionada($scope) && isMesmoJogador($scope.selecionada, peca))

@@ -1,4 +1,25 @@
-function moverPeca($scope, peca) {
+function moverPecaDoOutroLado($scope, alteracoes) {
+    if (alteracoes.jogador && alteracoes.jogador == $scope.jogador1.numero) return;
+
+    let x1 = 7 - alteracoes.posInicial[0];
+    let y1 = 7 - alteracoes.posInicial[1];
+    let x2 = 7 - alteracoes.posFinal[0];
+    let y2 = 7 - alteracoes.posFinal[1];
+
+    let campoPeca = $scope.tabuleiro[x1][y1];
+    let campoDesocupado = $scope.tabuleiro[x2][y2];
+
+    campoPeca.pos = {x: x2, y: y2};
+    campoDesocupado.pos = {x: x1, y: y1};
+
+    $scope.tabuleiro[x1][y1] = {};
+    $scope.tabuleiro[x2][y2] = {};
+
+    $scope.tabuleiro[x1][y1] = campoDesocupado;
+    $scope.tabuleiro[x2][y2] = campoPeca;
+}
+
+function moverPecaLocal($scope, peca) {
     let x1 = $scope.selecionada.x;
     let y1 = $scope.selecionada.y;
     let x2 = peca.pos.x;
@@ -14,6 +35,8 @@ function moverPeca($scope, peca) {
         let isMovimentoDuplo = movimentoDuplo($scope, x1, x2, y1, y2, campoPeca.jogador);
         if (!isMovimentoDuplo) return;
     }
+
+    enviarMovimentoPeca($scope.jogador1.numero, campoPeca, campoDesocupado);
 
     console.log(x1, y1, ' para ', x2, y2);
     campoPeca.pos = {x: x2, y: y2};

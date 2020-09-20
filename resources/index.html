@@ -19,7 +19,8 @@
 <div class="container-fluid">
     <div class="jumbotron">
         <button class="btn btn-primary" ng-click="removerJogador()">Zerar</button>
-
+        <br> {{alteracoes.posInicial}}<br>
+        {{alteracoes.posFinal}}<br>
         <div class="content-tabuleiro col-md-12 white">
             <h1 ng-if="podeSelecionar">É a sua vez!</h1>
             <h1 ng-if="!podeSelecionar">Vez do jogador {{jogador1.numero==1?2:1}}</h1>
@@ -31,8 +32,7 @@
                 <div class="coluna" ng-repeat="(y,peca) in linha track by $index">
                     <div class="peca" ng-click="selecionar(peca);">
                         <div class="btn btn-{{peca.cor}}" id="button-{{peca.id}}"
-                             ng-class="pecaController(peca)"
-                             style="width: {{size}};height: {{size}};">
+                             ng-class="pecaController(peca)" style="width: {{size}};height: {{size}};">
                         </div>
                     </div>
                 </div>

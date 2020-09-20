@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import static java.lang.Integer.parseInt;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 
 public class ServerHTTP {
     ServerSocket server;
@@ -56,39 +57,71 @@ public class ServerHTTP {
                 String searchSession = "/sessionId/";
                 String searchZerar = "/zerarJogo";
                 String searchConferir = "/conferirUsuario?sessionId=";
-                String searchMoverPeca = "/possoMoverPeca?sessionId=";
-                if (request.contains(searchMoverPeca) && jogoDama.isPartidaIniciada()) {
-                    String sessionId = request.replace(searchMoverPeca, "");
-                    System.out.println("possoMoverPeca " + sessionId);
+                String searchPodeMoverPeca = "/possoMoverPeca?sessionId=";
+                String searchMoverPeca = "/moverPeca?sessionId=";
+                String searchAlteracoes = "/alteracoes?sessionId=";
+                if (request.contains(searchAlteracoes) && jogoDama.isPartidaIniciada()) {
+                    int sessionId = parseInt(getSessionId(request, searchAlteracoes));
+                    if (isNull(jogoDama.getJogadorUltimasAlteracoes()) || jogoDama.getJogadorUltimasAlteracoes().getNumero() == sessionId)
+                        return;
+
+                    String ultimasAlteracoes = jogoDama.getUltimasAlteracoes();
+                    if (nonNull(ultimasAlteracoes)) {
+                        System.out.println("alteracoes");
+                        msg = gerarMensagem(200, ultimasAlteracoes);
+                        out.write(msg.getBytes());
+                        jogoDama.zerarUltimasAlteracoes();
+                    }
+                } else if (request.contains(searchMoverPeca) && jogoDama.isPartidaIniciada()) {
+                    String searchPosInicial = "posInicial=[";
+                    String searchPosFinal = "posFinal=[";
+
+                    int i = request.indexOf(searchMoverPeca);
+                    int f = request.indexOf(searchPosInicial) - 1;
+                    String sessionId = request.substring(i + searchMoverPeca.length(), f);
+
+                    String[] req = request.substring(i + searchMoverPeca.length()).split("&");
+                    String posInicial = req[1].replace(searchPosInicial, "").replace("]", "");
+                    String posFinal = req[2].replace(searchPosFinal, "").replace("]", "");
+
+//                    System.out.println("MoverPeca " + sessionId);
+//                    System.out.println("posInicial " + posInicial);
+//                    System.out.println("posFinal " + posFinal);
+//                    System.out.println();
+
+                    jogoDama.moverPeca(Integer.parseInt(sessionId), posInicial, posFinal);
+                } else if (request.contains(searchPodeMoverPeca) && jogoDama.isPartidaIniciada()) {
+                    String sessionId = getSessionId(request, searchPodeMoverPeca);
+//                    System.out.println("possoMoverPeca " + sessionId);
                     boolean jogadorPodeMoverPeca = jogoDama.jogadorPodeMoverPeca(parseInt(sessionId));
 
                     msg = gerarMensagem(200, "{\"podeMoverPeca\":" + jogadorPodeMoverPeca + "}");
                     out.write(msg.getBytes());
                 } else if (request.contains(searchZerar)) {
-                    System.out.println("zerando....");
+//                    System.out.println("zerando....");
                     jogoDama = new JogoDama();
                 } else if (request.contains(searchConferir)) {
-                    System.out.println(request);
-                    System.out.println("conferirUsuario");
-                    String sessionId = request.replace(searchConferir, "");
-                    System.out.println("sessionId " + sessionId);
-                    if ((isNull(jogoDama.getJogador(parseInt(sessionId))))
+//                    System.out.println(request);
+//                    System.out.println("conferirUsuario");
+                    String sessionId = getSessionId(request, searchConferir);
+//                    System.out.println("sessionId " + sessionId);
+                    if (!sessionId.equals("undefined") && (isNull(jogoDama.getJogador(parseInt(sessionId))))
                             || (parseInt(sessionId) == 1 && isNull(jogoDama.getJogador(2)))
                             || (parseInt(sessionId) == 2 && isNull(jogoDama.getJogador(1)))) {
                         iniciarPartida(out);
                     }
                 } else if (request.contains(searchSession)) {
-                    System.out.println(request);
+//                    System.out.println(request);
 
                     String sessionId = request.split(searchSession)[1];
-                    System.out.println("sessionId " + sessionId);
+//                    System.out.println("sessionId " + sessionId);
                     getPaginaInicial(out);
                 } else if (request.contains("/index") || request.equals("/")) {
                     getPaginaInicial(out);
                 } else if (isFile(request)) {
                     getArquivoServidor(out, request);
                 } else if (request.equals("/iniciarPartida")) {
-                    System.out.println(request);
+//                    System.out.println(request);
 
                     iniciarPartida(out);
                 }
@@ -99,9 +132,13 @@ public class ServerHTTP {
         }
     }
 
+    private String getSessionId(String request, String search) {
+        return request.replace(search, "");
+    }
+
     private void iniciarPartida(DataOutputStream out) throws IOException {
         String msg;
-        System.out.println("Iniciando partida");
+//        System.out.println("Iniciando partida");
         if (isNull(jogoDama.getJogador(1))) {
             String response = jogoDama.criarJogador(1);
             msg = gerarMensagem(200, response);
@@ -119,7 +156,7 @@ public class ServerHTTP {
     private void enviarResposta(Socket socket, DataOutputStream out) throws IOException {
         out.flush();
         socket.close();
-        System.out.println("-----------------------------------------");
+//        System.out.println("-----------------------------------------");
     }
 
     private void getPaginaInicial(DataOutputStream out) throws IOException {

@@ -8,6 +8,8 @@ public class JogoDama {
     private Jogador jogador2;
     private Jogador jogadorAtual;
     private boolean partidaIniciada;
+    private String ultimasAlteracoes;
+    private Jogador jogadorUltimasAlteracoes;
 
     public Jogador getJogador(int numero) {
         if (numero == 1) {
@@ -52,5 +54,32 @@ public class JogoDama {
 
         return (jogadorAtual.equals(jogador1) && numeroJogador == 1) ||
                 (jogadorAtual.equals(jogador2) && numeroJogador == 2);
+    }
+
+    public void moverPeca(int numeroJogador, String posInicial, String posFinal) {
+        ultimasAlteracoes = "{\"posInicial\":[" + posInicial + "], \"posFinal\":["
+                + posFinal + "], \"jogador\":" + numeroJogador + "}";
+
+//        System.out.println("moverPeca de " + posInicial + " para " + posFinal);
+
+        if (numeroJogador == 1) {
+            jogadorAtual = jogador2;
+            jogadorUltimasAlteracoes = jogador1;
+        } else {
+            jogadorAtual = jogador1;
+            jogadorUltimasAlteracoes = jogador2;
+        }
+    }
+
+    public String getUltimasAlteracoes() {
+        return ultimasAlteracoes;
+    }
+
+    public Jogador getJogadorUltimasAlteracoes() {
+        return jogadorUltimasAlteracoes;
+    }
+
+    public void zerarUltimasAlteracoes() {
+        this.ultimasAlteracoes = null;
     }
 }
