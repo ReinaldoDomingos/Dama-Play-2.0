@@ -19,8 +19,6 @@
 <div class="container-fluid">
     <div class="jumbotron">
         <button class="btn btn-primary" ng-click="removerJogador()">Zerar</button>
-        <br> {{alteracoes.posInicial}}<br>
-        {{alteracoes.posFinal}}<br>
         <div class="content-tabuleiro col-md-12 white">
             <h1 ng-if="podeSelecionar">É a sua vez!</h1>
             <h1 ng-if="!podeSelecionar">Vez do jogador {{jogador1.numero==1?2:1}}</h1>
